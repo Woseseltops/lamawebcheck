@@ -7,6 +7,9 @@ from sys import argv
 from os import mkdir
 from os.path import isdir
 
+import smtplib
+from email.mime.text import MIMEText
+
 #Importing the setting and the webcheck configuration file
 try:
     check_configuration = open(argv[1]).readlines()
@@ -50,7 +53,27 @@ if not isdir(settings['log_directory']):
 if settings['log_directory'][-1] != '/':
     settings['log_directory']+= '/'
 
-logfile = open(settings['log_directory']+datetime.datetime.now().strftime("%I:%M%p on %B %d, %Y"),'w')
+logfile_name = settings['log_directory']+datetime.datetime.now().strftime("%I:%M%p on %B %d, %Y")
+logfile = open(logfile_name,'w')
 
 #Run the tests
 runner.TextTestRunner(logfile).run(suite_groups)
+logfile.close()
+
+#Read the log file, and send mail if the last line of the output is not okay
+logfile = open(logfile_name,'r')
+
+if logfile.readlines()[-1].strip() != 'OK':
+
+    me = 'wstoop@applejack.science.ru.nl'
+    you = settings['email_addresses']
+
+    logfile.seek(0) #Reset pointer
+    msg = MIMEText(logfile.read())
+    msg['Subject'] = '[Lamawebcheck] Checks have failed'
+    msg['From'] = me
+    msg['To'] = ';'.join(you)
+
+    s = smtplib.SMTP('localhost')
+    s.sendmail(me, you, msg.as_string())
+    s.quit()

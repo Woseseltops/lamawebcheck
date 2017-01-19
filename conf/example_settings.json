@@ -1,4 +1,4 @@
 {
-	"email_adresses": ["example@example.com", "john@smith.com"],
+	"email_addresses": ["example@example.com", "john@smith.com"],
 	"log_directory": "/home/user/webchecklogs"
 }
