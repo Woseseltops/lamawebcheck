@@ -37,7 +37,11 @@ for suite_group in suite_groups:
     for suite in suite_group:
         for test in suite:
             check_type_name = test.__class__.__name__.lower()[4:]
-            test.urls = checks_per_type[check_type_name]
+            
+            try:
+                test.urls = checks_per_type[check_type_name]
+            except KeyError:
+                test.urls = []
 
 #Create the log environment
 if not isdir(settings['log_directory']):
