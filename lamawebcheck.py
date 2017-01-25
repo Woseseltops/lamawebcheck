@@ -2,7 +2,7 @@ import json
 import datetime
 
 from unittest import TestLoader, runner
-from sys import argv
+from sys import argv, path
 
 from os import mkdir
 from os.path import isdir
@@ -35,7 +35,7 @@ for raw_webcheck in check_configuration:
         checks_per_type[check_type] = [( url,args)]
 
 #Insert information about urls to test in the test, using the name of the classes of the checks
-suite_groups = TestLoader().discover('')
+suite_groups = TestLoader().discover(path[0])
 for suite_group in suite_groups:
     for suite in suite_group:
         for test in suite:
