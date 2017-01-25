@@ -53,8 +53,9 @@ if not isdir(settings['log_directory']):
 if settings['log_directory'][-1] != '/':
     settings['log_directory']+= '/'
 
-logfile_name = settings['log_directory']+datetime.datetime.now().strftime("%I:%M%p on %B %d, %Y")
-logfile = open(logfile_name,'w')
+logfile_name = settings['log_directory']+datetime.datetime.now().strftime("%B %d, %Y")
+logfile = open(logfile_name,'a')
+logfile.write(datetime.datetime.now().strftime("%I:%M%p"))
 
 #Run the tests
 runner.TextTestRunner(logfile).run(suite_groups)
