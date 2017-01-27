@@ -2,7 +2,7 @@
 A lightweight tool to test availability and content of websites and webservices
 
 Installing lamawebcheck
-=======================
+-----------------------
 
 Requirements:
 * Python 3
@@ -13,7 +13,7 @@ Just go
     git clone git@github.com:Woseseltops/lamawebcheck.git
     cd lamawebcheck
 
-And you're good to go
+And you're good to go.
 
 Configuring lamawebcheck
 ------------------------
@@ -48,7 +48,7 @@ Extending lamawebcheck
 Each of the checks that can be used in lamawebcheck:
 * Can be found in the folder `checks`.
 * Is a testcase from Python's `unittesting` module.
-* Is expected to be in a seperate file, class and function, starting with `test_`, `Test` and `test_` respectively.
+* Is expected to be in a separate file, class and function, starting with `test_`, `Test` and `test_` respectively.
 * Is expected to iterate over the content in `self.urls` (all urls that this check should be performed on, in this run), and do an assertion for each of them as part of `with self.subTest(i=url):`
 
 An example of an extremely basic check:
