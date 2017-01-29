@@ -38,7 +38,7 @@ class TestClam(unittest.TestCase):
                     args['parameters'] = {}
                 data = client.start(project, **args['parameters'])
                 if data.errors:
-                    raise Exception("CLAM service returned an error upon start:" + str(data.errors
+                    raise Exception("CLAM service returned an error upon start:" + str(data.errors))
             with self.subTest(i="POLL " + url):
                 status = 0
                 i = 0
