@@ -43,7 +43,6 @@ class TestClam(unittest.TestCase):
                     i += 1
                     if i > args['timeout']:
                         raise Exception("Timeout waiting for CLAM service to finish")
-                    print(status)
                     data = client.get(project)
                     status = data.status
                     time.sleep(1)
