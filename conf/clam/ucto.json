@@ -1,0 +1,5 @@
+{
+    "upload": [ {"file":"conf/clam/uctotest.txt", "inputtemplate": "untokinput", "parameters": {"language": "nl"} } ],
+    "parameters": { "xml": true },
+    "download": [ { "file":"uctotest.folia.xml"} ]
+}
