@@ -17,7 +17,7 @@ def test(self):
         password = None
     with open(argfile) as f:
         args = json.load(f)
-    client = CLAMClient(self.url,username, password)
+    client = CLAMClient(self.url,user=username, password=password, loadmetadata=False)
     project = 'lamawebchecktest' + str("%034x" % random.getrandbits(128))
     client.create(project)
     for file in args['upload']:
