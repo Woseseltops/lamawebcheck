@@ -1,8 +1,10 @@
 import json
 import datetime
+import unittest
+import importlib
 
 from unittest import TestLoader, runner
-from sys import argv, path
+from sys import argv, path, stderr
 
 from os import mkdir
 from os.path import isdir
@@ -19,6 +21,21 @@ except IndexError:
     print('python3 lamawebcheck.py /path/to/check_config_file.conf /path/to/settings.json')
     quit()
 
+class BaseTest(unittest.TestCase): #base class, tests will be appended dynamically
+
+    def __init__(self, type, testf, url, args):
+        super(BaseTest,self).__init__()
+        self.type = type
+        self.testf = testf
+        self.url = url
+        self.args = args
+
+    def runTest(self):
+        self.testf(self)
+
+    def shortDescription(self):
+        return """[%s] %s""" % (self.type, self.url)
+
 #Parse the check configuration file
 checks_per_type = {}
 
@@ -34,17 +51,18 @@ for raw_webcheck in check_configuration:
     except KeyError:
         checks_per_type[check_type] = [( url,args)]
 
-#Insert information about urls to test in the test, using the name of the classes of the checks
-suite_groups = TestLoader().discover(path[0])
-for suite_group in suite_groups:
-    for suite in suite_group:
-        for test in suite:
-            check_type_name = test.__class__.__name__.lower()[4:]
-            
-            try:
-                test.urls = checks_per_type[check_type_name]
-            except KeyError:
-                test.urls = []
+modules = {} #keep track of dynamically imported modules ourselves
+testsuite = unittest.TestSuite()
+for check_type, check_data in checks_per_type.items():
+    for i, (url, args) in enumerate(check_data):
+        if check_type not in modules:
+            modules[check_type] = importlib.import_module('checks.test_'+check_type)
+        testf = modules[check_type].test
+        #testfname = 'test_' + str(i).zfill(4) + '_' + check_type
+        test = BaseTest(check_type, testf, url,args)
+        testsuite.addTest(test)
+        print("Adding test " + repr(test),file=stderr)
+
 
 #Create the log environment
 if not isdir(settings['log_directory']):
@@ -55,10 +73,10 @@ if settings['log_directory'][-1] != '/':
 
 logfile_name = settings['log_directory']+datetime.datetime.now().strftime("%B %d, %Y")
 logfile = open(logfile_name,'a')
-logfile.write(datetime.datetime.now().strftime("%I:%M%p"))
+logfile.write(datetime.datetime.now().strftime("%I:%M%p") + "\n")
 
 #Run the tests
-runner.TextTestRunner(logfile).run(suite_groups)
+runner.TextTestRunner(logfile, verbosity=2).run(testsuite)
 logfile.close()
 
 #Read the log file, and send mail if the last line of the output is not okay

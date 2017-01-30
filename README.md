@@ -46,10 +46,13 @@ Extending lamawebcheck
 ----------------------
 
 Each of the checks that can be used in lamawebcheck:
-* Can be found in the folder `checks`.
-* Is a testcase from Python's `unittesting` module.
-* Is expected to be in a separate file, class and function, starting with `test_`, `Test` and `test_` respectively.
-* Is expected to iterate over the content in `self.urls` (all urls that this check should be performed on, in this run), and do an assertion for each of them as part of `with self.subTest(i=url):`
+
+* Can be found in the folder ``checks/``.
+* Tests are implemented using Python's ``unittest`` module.
+* Each check is expected to be in a separate module (file), starting with ``test_``
+* The module implements a method ``test(self)`` that runs the test, ``self`` will
+  be an instance of ``unittest.TestCase``.
+* The URL is available in ``self.url``, argument string in ``self.args``
 
 An example of an extremely basic check:
 
@@ -57,15 +60,7 @@ An example of an extremely basic check:
     import unittest
     from urllib.request import urlopen
 
-
-    class TestOnline(unittest.TestCase):
-
-        def test_online(self):
-            for url,arg in self.urls:
-                with self.subTest(i=url):
-                    self.assertEqual(urlopen(url).getcode(), 200) #checks for http 200
+    def test(self):
+        self.assertEqual(urlopen(self.url).getcode(), 200) #checks for http 200
 
 
-Ideas for improvement
----------------------
-* It should not be needed that the iteration over urls should be specified for each individual check. Maybe make a more abstract class that can do this, and then subclass?
