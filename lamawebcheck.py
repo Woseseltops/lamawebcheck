@@ -21,10 +21,10 @@ except IndexError:
     print('python3 lamawebcheck.py /path/to/check_config_file.conf /path/to/settings.json')
     quit()
 
-class BaseTest(unittest.TestCase): #base class, tests will be appended dynamically
+class Test(unittest.TestCase): #base class, tests will be appended dynamically
 
     def __init__(self, type, testf, url, args):
-        super(BaseTest,self).__init__()
+        super(Test,self).__init__()
         self.type = type
         self.testf = testf
         self.url = url
@@ -58,11 +58,8 @@ for check_type, check_data in checks_per_type.items():
         if check_type not in modules:
             modules[check_type] = importlib.import_module('checks.test_'+check_type)
         testf = modules[check_type].test
-        #testfname = 'test_' + str(i).zfill(4) + '_' + check_type
-        test = BaseTest(check_type, testf, url,args)
+        test = Test(check_type, testf, url,args)
         testsuite.addTest(test)
-        print("Adding test " + repr(test),file=stderr)
-
 
 #Create the log environment
 if not isdir(settings['log_directory']):
