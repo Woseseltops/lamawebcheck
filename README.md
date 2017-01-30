@@ -25,13 +25,15 @@ Every time lamawebcheck is run, it needs to know the location of two configurati
     {
 	    "email_addresses": ["example@example.com", "john@smith.com"],
 	    "log_directory": "/home/user/webchecklogs"
+        "vars": { "somecustomvariable": "somevalue" },
     }
     
     
-2 . The list of websites that need to be checked. Each website is on a new line, with this format: `http://url check_type args`. Example:
+2 . The list of websites that need to be checked. Each website is on a new line, with this format: ``id url check_type args``. Example:
 
-    http://www.google.nl/ online
-    http://applejack.science.ru.nl/ regex <html>\s{5}<center><img src=".{1,150}"></center>\s</html>
+    google http://www.google.nl/ online
+    mysite http://applejack.science.ru.nl/ regex <html>\s{5}<center><img src=".{1,150}"></center>\s</html>
+
 
 Using lamawebcheck
 ------------------
