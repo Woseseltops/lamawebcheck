@@ -1,0 +1,4 @@
+{
+    "upload": [ {"file":"conf/clam/test_nl_1.txt", "inputtemplate": "maininput"} ],
+    "download": [ { "file":"test_nl_1.xml" } ]
+}
