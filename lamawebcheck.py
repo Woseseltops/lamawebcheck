@@ -23,10 +23,11 @@ except IndexError:
 
 class Test(unittest.TestCase): #base class, tests will be appended dynamically
 
-    def __init__(self, type, testf, url, args):
+    def __init__(self, type, testf,name, url, args):
         super(Test,self).__init__()
         self.type = type
         self.testf = testf
+        self.name = name
         self.url = url
         self.args = args
 
@@ -34,7 +35,7 @@ class Test(unittest.TestCase): #base class, tests will be appended dynamically
         self.testf(self)
 
     def shortDescription(self):
-        return """[%s] %s""" % (self.type, self.url)
+        return """[%s] %s: %s""" % (self.type, self.name, self.url)
 
 #Parse the check configuration file
 checks_per_type = {}
@@ -42,23 +43,25 @@ checks_per_type = {}
 for raw_webcheck in check_configuration:
 
     items = raw_webcheck.strip().split()
-    url = items[0]
-    check_type = items[1]
-    args = ' '.join(items[2:])
+
+    name = items[0]
+    url = items[1]
+    check_type = items[2]
+    args = ' '.join(items[3:])
 
     try:
-        checks_per_type[check_type].append((url,args))
+        checks_per_type[check_type].append((name, url,args))
     except KeyError:
-        checks_per_type[check_type] = [( url,args)]
+        checks_per_type[check_type] = [( name, url,args)]
 
 modules = {} #keep track of dynamically imported modules ourselves
 testsuite = unittest.TestSuite()
 for check_type, check_data in checks_per_type.items():
-    for i, (url, args) in enumerate(check_data):
+    for i, (name, url, args) in enumerate(check_data):
         if check_type not in modules:
             modules[check_type] = importlib.import_module('checks.test_'+check_type)
         testf = modules[check_type].test
-        test = Test(check_type, testf, url,args)
+        test = Test(check_type, testf,name, url,args)
         testsuite.addTest(test)
 
 #Create the log environment
