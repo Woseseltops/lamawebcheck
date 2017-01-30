@@ -49,6 +49,12 @@ for raw_webcheck in check_configuration:
     check_type = items[2]
     args = ' '.join(items[3:])
 
+    #simple variable substitution (so we can keep sensitive data in settings, out of git, instead of checks.conf, in git)
+    if 'vars' in settings:
+        for key, value in sorted( settings['vars'].items()):
+            if args.find('${' + key + '}'):
+                args = args.replace('${' + key + '}', value)
+
     try:
         checks_per_type[check_type].append((name, url,args))
     except KeyError:
