@@ -1,0 +1,4 @@
+{
+    "upload": [ {"file":"conf/clam/test_fy_1.txt", "inputtemplate": "input-fy" } ],
+    "download": [ { "file":"test_fy_1.nl.txt" } ]
+}
