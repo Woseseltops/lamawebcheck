@@ -4,6 +4,7 @@ import json
 import random
 import os.path
 import time
+import re
 from clam.common.client import CLAMClient
 
 class TestClam(unittest.TestCase):
@@ -51,6 +52,10 @@ class TestClam(unittest.TestCase):
                         if 'file' not in file:
                             raise Exception("LamaWebCheck Configuration error: no file specified")
                         client.download(project, file['file'], '/tmp/lamawebcheck_output')
+                        if 'regex' in file:
+                            pattern = re.compile(file['regex'])
+                            with open('/tmp/lamawebcheck_output','r',encoding='utf-8') as f:
+                                self.assertTrue(pattern.match(f.read()))
                 client.delete(project)
 
 if __name__ == '__main__':
