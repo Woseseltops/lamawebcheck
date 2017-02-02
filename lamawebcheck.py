@@ -77,7 +77,7 @@ if not isdir(settings['log_directory']):
 if settings['log_directory'][-1] != '/':
     settings['log_directory']+= '/'
 
-logfile_name = settings['log_directory']+datetime.datetime.now().strftime("%B %d, %Y")
+logfile_name = settings['log_directory']+datetime.datetime.now().strftime("%Y%m%d") + '.log'
 logfile = open(logfile_name,'a')
 logfile.write(datetime.datetime.now().strftime("%I:%M%p") + "\n")
 
