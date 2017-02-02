@@ -79,7 +79,7 @@ if settings['log_directory'][-1] != '/':
 
 logfile_name = settings['log_directory']+datetime.datetime.now().strftime("%Y%m%d") + '.log'
 logfile = open(logfile_name,'a')
-logfile.write(datetime.datetime.now().strftime("%I:%M%p") + "\n")
+logfile.write(datetime.datetime.now().strftime("%H:%M") + "\n")
 
 #Run the tests
 runner.TextTestRunner(logfile, verbosity=2).run(testsuite)
