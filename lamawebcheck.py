@@ -96,7 +96,7 @@ if logfile.readlines()[-1].strip() != 'OK':
     logfile.seek(0) #Reset pointer
     msgbody = ""
     for line in logfile.read():
-        if line.find('LaMaWebCheck Run') != -1:
+        if line.find('LamaWebCheck Run') != -1:
             msgbody = line
         else:
             msgbody += line
