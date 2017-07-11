@@ -1,5 +1,5 @@
 {
-    "upload": [ {"file":"conf/clam/test_nl_1.txt", "inputtemplate": "untokinput", "parameters": {"language": "nl"} } ],
+    "upload": [ {"file":"conf/clam/test_nl_1.txt", "inputtemplate": "untokinput", "parameters": {"language": "nld"} } ],
     "parameters": { "xml": true },
     "download": [ { "file":"test_nl_1.xml" } ]
 }
