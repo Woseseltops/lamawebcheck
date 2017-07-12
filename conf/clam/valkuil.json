@@ -1,5 +1,5 @@
 {
     "upload": [ {"file":"conf/clam/valkuiltest.txt", "inputtemplate": "textinput" } ],
-    "parameters": { "donate": false },
+    "parameters": { "donate": false, "sensitivity": 0.85 },
     "download": [ { "file":"valkuiltest.xml" } ]
 }
