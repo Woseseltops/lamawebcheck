@@ -45,6 +45,9 @@ for raw_webcheck in check_configuration:
     items = raw_webcheck.strip().split()
 
     name = items[0]
+    if not name or (name and name[0] == '#'):
+        #ignore empty lines and comments
+        continue
     url = items[1]
     check_type = items[2]
     args = ' '.join(items[3:])
