@@ -35,7 +35,7 @@ class Test(unittest.TestCase): #base class, tests will be appended dynamically
         self.testf(self)
 
     def shortDescription(self):
-        return """[%s] %s: %s""" % (self.type, self.name, self.url)
+        return """[%s] %s : %s""" % (self.type, self.name, self.url)
 
 #Parse the check configuration file
 checks_per_type = {}
@@ -97,14 +97,23 @@ if logfile.readlines()[-1].strip() != 'OK':
     you = settings['email_addresses']
 
     logfile.seek(0) #Reset pointer
+
     msgbody = ""
+    failed_tests = []
+
     for line in logfile.readlines():
         if line.find('LamaWebCheck Run') != -1:
             msgbody = line
+            failed_tests = []
         else:
             msgbody += line
+
+            words = line.split()
+            if len(words) > 0 and words[-1] == 'ERROR':
+	            failed_tests.append(words[1])
+
     msg = MIMEText(msgbody)
-    msg['Subject'] = '[Lamawebcheck] Checks have failed'
+    msg['Subject'] = '[Lamawebcheck] '+','.join(failed_tests)+' failed'
     msg['From'] = me
     msg['To'] = ';'.join(you)
 
