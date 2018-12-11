@@ -10,14 +10,20 @@ from clam.common.client import CLAMClient
 
 def test(self):
     if ' ' in self.args:
-        argfile, username, password = self.args.split(' ')
+        fields = self.args.split(' ')
+        argfile, username, password = fields[:3]
+        if len(fields) == 4:
+            basicauth = bool(int(fields[3]))
+        else:
+            basicauth = False
     else:
         argfile = self.args
         username = None
         password = None
+        basicauth = False
     with open(argfile) as f:
         args = json.load(f)
-    client = CLAMClient(self.url,user=username, password=password, loadmetadata=False)
+    client = CLAMClient(self.url,user=username, password=password, loadmetadata=False, basicauth=basicauth)
     project = 'lamawebchecktest' + str("%034x" % random.getrandbits(128))
     client.create(project)
     for file in args['upload']:
