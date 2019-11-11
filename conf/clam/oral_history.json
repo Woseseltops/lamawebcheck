@@ -1,0 +1,4 @@
+{
+    "upload": [ {"file":"conf/clam/test_nld.wav", "inputtemplate": "InputWavFile"} ],
+    "download": [ { "file":"test_nld.txt" } ]
+}
